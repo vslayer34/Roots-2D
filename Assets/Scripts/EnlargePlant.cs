@@ -1,32 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.Networking.UnityWebRequest;
+using TMPro;
 
 public class EnlargePlant : MonoBehaviour
 {
-    bool isGameOver;
-    float interval = 5.0f;
+    [SerializeField]
+     TextMeshProUGUI growthText;
 
-    void Start()
+    /// <summary>
+    /// Update the scale of the plant based on the generated number
+    /// </summary>
+    /// <param name="number"></param>
+    public void UpdateScale(int number)
     {
-        StartCoroutine(GameLoop());
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    void UpdateScale(int number)
-    {
+        growthText.text = number.ToString();
+        // value to modify the scale so it won't be so big of a plant (/ 10)
         float valueTOModifiyScale = 0.1f;
-        Vector3 addedScale = new Vector3(0.0f, valueTOModifiyScale, 0.0f);
-        transform.localScale += addedScale * Time.deltaTime;
+
+        // calculate the added scale and add it to the plant
+        Vector3 addedScale = new Vector3(transform.localScale.x, number * valueTOModifiyScale, transform.localScale.z);
+        transform.localScale = addedScale;
     }
 
-
+    /*
     /// <summary>
     /// Generate the number that the plant would grow relative to it
     /// </summary>
@@ -61,18 +58,6 @@ public class EnlargePlant : MonoBehaviour
 
         return generatedNumber;
     }
-
-    /// <summary>
-    /// Manage the game loop
-    /// </summary>
-    /// <returns></returns>
-    IEnumerator GameLoop()
-    {
-        while (!isGameOver)
-        {
-            int generatedNumber = GenerateNumber();
-            UpdateScale(generatedNumber);
-            yield return new WaitForSeconds(interval);
-        }
-    }
+    */
+    
 }
