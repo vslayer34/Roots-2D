@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] EnlargePlant[] plants;
     [SerializeField] GameObject pickUp;
+    [SerializeField] Transform[] spawnPoints;
 
     public static GameManager instance;
 
@@ -28,12 +29,16 @@ public class GameManager : MonoBehaviour
     /// <returns></returns>
     public IEnumerator GameLoop()
     {
+        // spawn the pick ups
+        foreach (var spawnPoint in spawnPoints)
+        {
+            Instantiate(pickUp, spawnPoint.position, pickUp.transform.rotation);
+        }
+
         int stage = 0;
         while (!isGameOver)
         {
-            //Debug.Log($"current stage: {stage}");
-            //int generatedNumber = GenerateNumber();
-            //UpdateScale(generatedNumber);
+            // Spawn the plants and generate there numbers
             foreach (var plant in plants)
             {
                 int genratedNumber = GenerateNumber(stage);
