@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     float interval = 5.0f;
 
     [SerializeField] EnlargePlant[] plants;
+    [SerializeField] GameObject pickUp;
 
     public static GameManager instance;
 
@@ -30,7 +31,7 @@ public class GameManager : MonoBehaviour
         int stage = 0;
         while (!isGameOver)
         {
-            Debug.Log($"current stage: {stage}");
+            //Debug.Log($"current stage: {stage}");
             //int generatedNumber = GenerateNumber();
             //UpdateScale(generatedNumber);
             foreach (var plant in plants)
@@ -57,7 +58,7 @@ public class GameManager : MonoBehaviour
         // genrate the number and return it
         int number = Random.Range(minimumValue + addedValue, maximumValue + addedValue);
 
-        Debug.Log(number * number);
+        //Debug.Log(number * number);
         return number * number;
     }
 }
