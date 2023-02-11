@@ -29,24 +29,33 @@ public class GameManager : MonoBehaviour
     /// <returns></returns>
     public IEnumerator GameLoop()
     {
-        // spawn the pick ups
-        foreach (var spawnPoint in spawnPoints)
-        {
-            Instantiate(pickUp, spawnPoint.position, pickUp.transform.rotation);
-        }
 
         int stage = 0;
         while (!isGameOver)
         {
+            // spawn the pick ups
+            foreach (var spawnPoint in spawnPoints)
+            {
+                pickUp.GetComponent<PickUp>().number = GenerateNumber(stage);
+                GameObject newSpawn = Instantiate(pickUp, spawnPoint.position, pickUp.transform.rotation);
+                newSpawn.transform.parent = spawnPoint;
+            }
+
             // Spawn the plants and generate there numbers
             foreach (var plant in plants)
             {
-                int genratedNumber = GenerateNumber(stage);
+                int genratedNumber = (int)Mathf.Pow(GenerateNumber(stage), 2);
                 plant.UpdateScale(genratedNumber);
                 stage++;
             }
 
             yield return new WaitForSeconds(interval);
+
+            // remove old pick ups
+            foreach (var spawnPoint in spawnPoints)
+            {
+                Destroy(spawnPoint.transform.GetChild(0).gameObject);
+            }
         }
     }
 
@@ -64,6 +73,6 @@ public class GameManager : MonoBehaviour
         int number = Random.Range(minimumValue + addedValue, maximumValue + addedValue);
 
         //Debug.Log(number * number);
-        return number * number;
+        return number;
     }
 }
