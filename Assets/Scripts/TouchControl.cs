@@ -33,8 +33,14 @@ public class TouchControl : MonoBehaviour
 
             else if (touchInput.phase == TouchPhase.Ended && isFound)
             {
+                // clear is Found
                 isFound = false;
-                //pickUp.;
+                
+                // get the script component and return the pick up to its original position
+                PickUp pickUpScript = pickUp.GetComponent<PickUp>();
+                pickUp.transform.position = new Vector3(pickUpScript.startPosition.x, pickUpScript.startPosition.y);
+
+                // clear the pick up
                 pickUp = null;
             }
         }
@@ -52,11 +58,8 @@ public class TouchControl : MonoBehaviour
             // pick up is found
             Debug.Log("touched the object");
             isFound = true;
+            // referance the pick up in the update function
             pickUp = hit;
-
-            // get the original position of the pickup
-            originalPosition.position = hit.GetComponent<PickUp>().startPosition;
-            Debug.Log($"Position got: {originalPosition.position}");
         }
 
     }
