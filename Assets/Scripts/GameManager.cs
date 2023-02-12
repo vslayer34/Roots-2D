@@ -33,18 +33,37 @@ public class GameManager : MonoBehaviour
         int stage = 0;
         while (!isGameOver)
         {
+            int genratedNumber;
+            int[] arrayOfGeneratedNumbers = new int[3];
+
+
+            // Generate numbers for pick up and the plant
+            genratedNumber = GenerateNumber(stage);
+
+            // generate random numbers for array of 3
+            arrayOfGeneratedNumbers[0] = GenerateNumber(stage) + Random.Range(0, 3);
+            arrayOfGeneratedNumbers[1] = GenerateNumber(stage) - Random.Range(0, 2);
+            arrayOfGeneratedNumbers[2] = GenerateNumber(stage) + Random.Range(0, 3);
+
+            // one random index must have the correct number
+            int index = Random.Range(0, 3);
+            arrayOfGeneratedNumbers[index] = genratedNumber;
+
             // spawn the pick ups
-            foreach (var spawnPoint in spawnPoints)
+            for (int i = 0; i < spawnPoints.Length; i++)
             {
-                pickUp.GetComponent<PickUp>().number = GenerateNumber(stage);
-                GameObject newSpawn = Instantiate(pickUp, spawnPoint.position, pickUp.transform.rotation);
-                newSpawn.transform.parent = spawnPoint;
+                // assign a number to the array acorrding to the index
+                pickUp.GetComponent<PickUp>().number = arrayOfGeneratedNumbers[i];
+
+                // instantiate the pick up objects as child of the spawn points
+                GameObject newSpawn = Instantiate(pickUp, spawnPoints[i].position, pickUp.transform.rotation);
+                newSpawn.transform.parent = spawnPoints[i];
             }
 
-            // Spawn the plants and generate there numbers
+            // Spawn the plants and power its number
             foreach (var plant in plants)
             {
-                int genratedNumber = (int)Mathf.Pow(GenerateNumber(stage), 2);
+                genratedNumber = (int) Mathf.Pow(genratedNumber, 2);
                 plant.UpdateScale(genratedNumber);
                 stage++;
             }
