@@ -8,12 +8,16 @@ public class EnlargePlant : MonoBehaviour
     [SerializeField]
      TextMeshProUGUI growthText;
 
+    public int growthLevel;
+
     /// <summary>
     /// Update the scale of the plant based on the generated number
     /// </summary>
     /// <param name="number"></param>
     public void UpdateScale(int number)
     {
+        growthLevel = number;
+
         growthText.text = number.ToString();
         // value to modify the scale so it won't be so big of a plant (/ 10)
         float valueTOModifiyScale = 0.1f;
